@@ -42,7 +42,7 @@ def get_transaction_states(request):
     return Response({"transaction_states": transaction_states},status=status.HTTP_200_OK)
 
 
-@api_view(['GET']) 
+@api_view(['PUT']) 
 @permission_classes([IsAuthenticated])  
 def cancel_transaction(request,transaction_id):
     
