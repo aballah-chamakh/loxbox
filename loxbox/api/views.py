@@ -42,18 +42,3 @@ def get_transaction_states(request):
     return Response({"transaction_states": transaction_states},status=status.HTTP_200_OK)
 
 
-@api_view(['PUT']) 
-@permission_classes([IsAuthenticated])  
-def cancel_transaction(request,transaction_id):
-    
-    customer_obj = request.user.customer 
-
-    # CANCEL THE TRANSACTION ONLY IF IT IS PREPARED 
-    qs = customer_obj.transaction_set.filter(transaction_id=transaction_id,state='Préparés')
-    if qs :
-        transaction_obj = qs.first()
-        transaction_obj.state= 'Annulés'
-        transaction_obj.save()
-        return Response({"success_msg": f"The transaction with the ID {transaction_id} has been canceled."},status=status.HTTP_200_OK)
-    else : 
-        return Response({"error_msg": f"You don't have any transaction with an ID {transaction_id} prepared."},status=status.HTTP_404_NOT_FOUND)
